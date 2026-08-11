@@ -243,8 +243,8 @@ I am interested in environments where I can:
 ## 📫 Connect
 
 * 🌐 **Portfolio:** [thipetebogo.github.io](https://thipetebogo.github.io/)
-* 💼 **LinkedIn:** *Add your LinkedIn URL*
-* 📧 **Email:** *Add your professional email*
+* 💼 **LinkedIn:** *(https://www.linkedin.com/in/tebogonkadimeng/)*
+* 📧 **Email:** *tebogon036@gmail.com*
 
 ---
 
