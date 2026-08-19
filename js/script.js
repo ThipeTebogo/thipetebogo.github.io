@@ -20,12 +20,79 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* ---------- resume preview modal ---------- */
+  const resumeBtn = document.getElementById('resumeBtn');
+  const resumeModal = document.getElementById('resumeModal');
+  const resumeFrame = document.getElementById('resumeFrame');
+  const modalClose = document.getElementById('modalClose');
+
+  if (resumeBtn && resumeModal && resumeFrame && modalClose) {
+    const openResumeModal = (e) => {
+      e.preventDefault();
+      resumeFrame.src = resumeBtn.getAttribute('href');
+      resumeModal.classList.add('open');
+      resumeModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      modalClose.focus();
+    };
+    const closeResumeModal = () => {
+      resumeModal.classList.remove('open');
+      resumeModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      resumeFrame.src = '';
+      resumeBtn.focus();
+    };
+
+    resumeBtn.addEventListener('click', openResumeModal);
+    modalClose.addEventListener('click', closeResumeModal);
+    resumeModal.addEventListener('click', (e) => {
+      if (e.target === resumeModal) closeResumeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && resumeModal.classList.contains('open')) closeResumeModal();
+    });
+  }
+
   /* ---------- typewriter: name <-> role ---------- */
   const typedEl = document.getElementById('typedName');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (typedEl) {
     const phrases = ['Tebogo Nkadimeng.', 'I am a Data Analyst.'];
+    const heroNameEl = typedEl.parentElement;
+
+    // Shrinks the headline font-size (never below 14px) so the longest phrase
+    // always fits on a single line, instead of wrapping.
+    const fitHeroName = () => {
+      const container = heroNameEl.closest('.hero-inner');
+      if (!container) return;
+      heroNameEl.style.fontSize = '';
+      const computed = getComputedStyle(heroNameEl);
+      const baseSize = parseFloat(computed.fontSize);
+      const longest = phrases.reduce((a, b) => (a.length >= b.length ? a : b), '');
+
+      const measurer = document.createElement('span');
+      measurer.style.position = 'absolute';
+      measurer.style.visibility = 'hidden';
+      measurer.style.whiteSpace = 'nowrap';
+      measurer.style.fontFamily = computed.fontFamily;
+      measurer.style.fontWeight = computed.fontWeight;
+      measurer.style.letterSpacing = computed.letterSpacing;
+      measurer.style.fontSize = baseSize + 'px';
+      measurer.textContent = longest + ' |'; // include room for the caret
+      document.body.appendChild(measurer);
+      const textWidth = measurer.offsetWidth;
+      document.body.removeChild(measurer);
+
+      const available = container.clientWidth;
+      if (textWidth > available) {
+        const scaled = Math.max((baseSize * available) / textWidth * 0.97, 14);
+        heroNameEl.style.fontSize = scaled + 'px';
+      }
+    };
+
+    fitHeroName();
+    window.addEventListener('resize', fitHeroName);
 
     if (prefersReducedMotion) {
       typedEl.textContent = phrases[0];
@@ -69,6 +136,30 @@ document.addEventListener('DOMContentLoaded', () => {
       typedEl.textContent = '';
       setTimeout(tick, 600);
     }
+  }
+
+  /* ---------- crop showcase video to its final 15 seconds ---------- */
+  const showcaseVideo = document.querySelector('.video-frame video');
+  if (showcaseVideo) {
+    const CLIP_SECONDS = 15;
+    let clipStart = 0;
+
+    showcaseVideo.addEventListener('loadedmetadata', () => {
+      clipStart = Math.max(0, showcaseVideo.duration - CLIP_SECONDS);
+      showcaseVideo.currentTime = clipStart;
+    });
+
+    showcaseVideo.addEventListener('play', () => {
+      if (showcaseVideo.currentTime < clipStart - 0.5) {
+        showcaseVideo.currentTime = clipStart;
+      }
+    });
+
+    showcaseVideo.addEventListener('timeupdate', () => {
+      if (showcaseVideo.currentTime < clipStart - 1) {
+        showcaseVideo.currentTime = clipStart;
+      }
+    });
   }
 
   /* ---------- scroll reveal ---------- */
