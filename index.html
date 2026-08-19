@@ -29,7 +29,7 @@
       <a href="#contact"><span class="idx">04</span>Contact</a>
     </nav>
 
-    <a class="btn btn-outline" id="resumeBtn" href="assets/resume.pdf" download="Tebogo_Nkadimeng_Resume.pdf">
+    <a class="btn btn-outline" id="resumeBtn" href="assets/resume.pdf" target="_blank" rel="noopener">
       <span>Resume</span>
       <i class="fa-solid fa-arrow-down-long"></i>
     </a>
@@ -242,8 +242,7 @@
       <h2>Get In Touch</h2>
       <span class="rule"></span>
     </div>
-
-    
+    <div class="contact-grid">
       <p class="contact-copy">
         I'm currently open to new opportunities where I can apply my data analytics and business
         intelligence skills, contribute to meaningful projects, and continue growing as a
@@ -264,7 +263,7 @@
           <a href="#" target="_blank" rel="noopener" aria-label="Medium"><i class="fa-brands fa-medium"></i></a>
         </div>
       </div>
-  
+    </div>
   </section>
 
 </main>
@@ -272,6 +271,17 @@
 <footer class="site-footer">
   <p>Designed &amp; built from a Canva concept · © <span id="year"></span> Tebogo Nkadimeng</p>
 </footer>
+
+<!-- ================= RESUME PREVIEW MODAL ================= -->
+<div class="modal-overlay" id="resumeModal" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="resumeModalTitle">
+    <div class="modal-header">
+      <h3 id="resumeModalTitle">Resume Preview</h3>
+      <button class="modal-close" id="modalClose" aria-label="Close resume preview">&times;</button>
+    </div>
+    <iframe id="resumeFrame" src="" title="Tebogo Nkadimeng resume PDF preview"></iframe>
+  </div>
+</div>
 
 <script src="js/script.js"></script>
 </body>
